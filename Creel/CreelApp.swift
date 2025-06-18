@@ -12,6 +12,8 @@ struct CreelApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(FishingDataManager())
+                .environmentObject(LocationManager())
         }
     }
 }

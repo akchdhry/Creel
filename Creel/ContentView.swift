@@ -8,14 +8,43 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var fishingData = FishingDataManager()
+    @StateObject private var locationManager = LocationManager()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            MapView()
+                .tabItem {
+                    Image(systemName: "map")
+                    Text("Map")
+                }
+            
+            CatchLogView()
+                .tabItem {
+                    Image(systemName: "camera")
+                    Text("Log Catch")
+                }
+            
+            MyFishView()
+                .tabItem {
+                    Image(systemName: "list.bullet")
+                    Text("My Fish")
+                }
+            
+            LeaderboardView()
+                .tabItem {
+                    Image(systemName: "chart.bar")
+                    Text("Leaderboard")
+                }
+            
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person")
+                    Text("Profile")
+                }
         }
-        .padding()
+        .environmentObject(fishingData)
+        .environmentObject(locationManager)
     }
 }
 
