@@ -5,6 +5,8 @@
 //  Created by Aareb Chowdhury on 6/18/25.
 //
 
+import SwiftUI
+
 struct MapView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var fishingData: FishingDataManager

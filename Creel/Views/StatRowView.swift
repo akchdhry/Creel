@@ -5,6 +5,8 @@
 //  Created by Aareb Chowdhury on 6/18/25.
 //
 
+import SwiftUI
+
 struct StatRowView: View {
     let title: String
     let value: String

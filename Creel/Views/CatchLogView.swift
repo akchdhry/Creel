@@ -5,6 +5,8 @@
 //  Created by Aareb Chowdhury on 6/18/25.
 //
 
+import SwiftUI
+
 struct CatchLogView: View {
     @EnvironmentObject var fishingData: FishingDataManager
     @EnvironmentObject var locationManager: LocationManager

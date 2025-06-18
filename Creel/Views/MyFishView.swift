@@ -5,6 +5,8 @@
 //  Created by Aareb Chowdhury on 6/18/25.
 //
 
+import SwiftUI
+
 struct MyFishView: View {
     @EnvironmentObject var fishingData: FishingDataManager
     

@@ -5,6 +5,7 @@
 //  Created by Aareb Chowdhury on 6/18/25.
 //
 
+import Foundation
 import Combine
 
 class FishingDataManager: ObservableObject {

@@ -5,6 +5,7 @@
 //  Created by Aareb Chowdhury on 6/18/25.
 //
 
+import SwiftUI
 import UIKit
 
 struct CameraView: UIViewControllerRepresentable {

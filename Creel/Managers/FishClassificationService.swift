@@ -5,9 +5,11 @@
 //  Created by Aareb Chowdhury on 6/18/25.
 //
 
+import Foundation
 import AVFoundation
 import Vision
 import CoreML
+import UIKit
 
 class FishClassificationService: ObservableObject {
     private var model: VNCoreMLModel?
