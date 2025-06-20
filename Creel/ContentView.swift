@@ -13,34 +13,21 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            MapView()
+            HomeView()
                 .tabItem {
-                    Image(systemName: "map")
-                    Text("Map")
+                    Image(systemName: "house.fill")
+                    Text("Home")
                 }
-            
             CatchLogView()
                 .tabItem {
-                    Image(systemName: "camera")
+                    Image(systemName: "fish.fill")
                     Text("Log Catch")
                 }
             
             MyFishView()
                 .tabItem {
-                    Image(systemName: "list.bullet")
-                    Text("My Fish")
-                }
-            
-            LeaderboardView()
-                .tabItem {
-                    Image(systemName: "chart.bar")
-                    Text("Leaderboard")
-                }
-            
-            ProfileView()
-                .tabItem {
-                    Image(systemName: "person")
-                    Text("Profile")
+                    Image(systemName: "shippingbox.fill")
+                    Text("Creelket")
                 }
         }
         .environmentObject(fishingData)
