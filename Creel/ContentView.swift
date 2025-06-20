@@ -24,14 +24,14 @@ struct ContentView: View {
                     
                     CatchLogView()
                         .tabItem {
-                            Image(systemName: "camera")
+                            Image(systemName: "figure.fishing")
                             Text("Log Catch")
                         }
                     
                     MyFishView()
                         .tabItem {
-                            Image(systemName: "list.bullet")
-                            Text("My Fish")
+                            Image(systemName: "fish.fill")
+                            Text("The Aquarium")
                         }
                 }
                 .environmentObject(fishingData)
