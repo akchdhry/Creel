@@ -31,7 +31,7 @@ struct HomeView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Dashboard")
+            .navigationTitle("Home")
             .background(Color(.systemGroupedBackground))
         }
     }
@@ -372,7 +372,7 @@ struct EmptyStateView: View {
                     .padding(.vertical, 10)
                     .background(Color.blue)
                     .cornerRadius(8)
-            }
+            }.padding(.top, 8)
         }
         .padding(.vertical, 20).frame(maxWidth: .infinity)
     }
