@@ -8,30 +8,39 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var authManager = AuthenticationManager()
     @StateObject private var fishingData = FishingDataManager()
     @StateObject private var locationManager = LocationManager()
     
     var body: some View {
-        TabView {
-            HomeView()
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Home")
+        Group {
+            if authManager.isAuthenticated {
+                TabView {
+                    HomeView()
+                        .tabItem {
+                            Image(systemName: "house.fill")
+                            Text("Home")
+                        }
+                    
+                    CatchLogView()
+                        .tabItem {
+                            Image(systemName: "camera")
+                            Text("Log Catch")
+                        }
+                    
+                    MyFishView()
+                        .tabItem {
+                            Image(systemName: "list.bullet")
+                            Text("My Fish")
+                        }
                 }
-            CatchLogView()
-                .tabItem {
-                    Image(systemName: "fish.fill")
-                    Text("Log Catch")
-                }
-            
-            MyFishView()
-                .tabItem {
-                    Image(systemName: "shippingbox.fill")
-                    Text("Creelket")
-                }
+                .environmentObject(fishingData)
+                .environmentObject(locationManager)
+                .environmentObject(authManager)
+            } else {
+                AuthenticationView(isAuthenticated: $authManager.isAuthenticated)
+            }
         }
-        .environmentObject(fishingData)
-        .environmentObject(locationManager)
     }
 }
 
