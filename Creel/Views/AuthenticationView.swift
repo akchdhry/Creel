@@ -54,6 +54,7 @@ struct AuthenticationView: View {
             
             VStack(spacing: 16) {
                 Spacer()
+                Spacer()
                 
                 // App Icon/Logo
                 ZStack {
@@ -85,6 +86,9 @@ struct AuthenticationView: View {
     // MARK: - Form Section
     private var formSection: some View {
         VStack(spacing: 24) {
+            // Additional Options
+            additionalOptionsSection
+            
             // Mode Toggle
             modeToggleSection
             
@@ -93,9 +97,6 @@ struct AuthenticationView: View {
             
             // Action Button
             actionButton
-            
-            // Additional Options
-            additionalOptionsSection
             
             Spacer(minLength: 50)
         }
@@ -133,23 +134,23 @@ struct AuthenticationView: View {
     // MARK: - Input Fields
     private var inputFieldsSection: some View {
         VStack(spacing: 16) {
-            // Username (Sign up only)
-            if !isLoginMode {
+            
+            // Username
                 CustomTextField(
                     placeholder: "Username",
                     text: $username,
                     icon: "person.fill"
                 )
-                .transition(.move(edge: .top).combined(with: .opacity))
+
+            // Email (Sign up only)
+            if !isLoginMode {
+                CustomTextField(
+                    placeholder: "Email",
+                    text: $email,
+                    icon: "envelope.fill",
+                    keyboardType: .emailAddress
+                ).transition(.move(edge: .top).combined(with: .opacity))
             }
-            
-            // Email
-            CustomTextField(
-                placeholder: "Email",
-                text: $email,
-                icon: "envelope.fill",
-                keyboardType: .emailAddress
-            )
             
             // Password
             CustomSecureField(
@@ -167,8 +168,16 @@ struct AuthenticationView: View {
                 )
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
+            if isLoginMode {
+                Button("Forgot Password?") {
+                    showForgotPassword()
+                }
+                .font(.subheadline)
+                .foregroundColor(.blue)
+            }
         }
         .animation(.easeInOut(duration: 0.3), value: isLoginMode)
+        
     }
     
     // MARK: - Action Button
@@ -204,51 +213,37 @@ struct AuthenticationView: View {
     // MARK: - Additional Options
     private var additionalOptionsSection: some View {
         VStack(spacing: 16) {
-            if isLoginMode {
-                Button("Forgot Password?") {
-                    showForgotPassword()
-                }
-                .font(.subheadline)
-                .foregroundColor(.blue)
-            }
-            
             // Social Login Options
-            VStack(spacing: 12) {
-                Text("Or continue with")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+            HStack(spacing: 16) {
+                SocialLoginButton(
+                    title: "Google",
+                    icon: "globe",
+                    color: .red
+                ) {
+                    handleSocialLogin("Google")
+                }
                 
-                HStack(spacing: 16) {
-                    SocialLoginButton(
-                        title: "Google",
-                        icon: "globe",
-                        color: .red
-                    ) {
-                        handleSocialLogin("Google")
-                    }
-                    
-                    SocialLoginButton(
-                        title: "Apple",
-                        icon: "apple.logo",
-                        color: .black
-                    ) {
-                        handleSocialLogin("Apple")
-                    }
+                SocialLoginButton(
+                    title: "Apple",
+                    icon: "apple.logo",
+                    color: .black
+                ) {
+                    handleSocialLogin("Apple")
                 }
             }
-            .padding(.top, 8)
         }
     }
     
     // MARK: - Form Validation
     private var isFormValid: Bool {
-        let emailValid = email.contains("@") && email.contains(".")
+
+        let usernameValid = username.count >= 3
         let passwordValid = password.count >= 6
         
         if isLoginMode {
-            return emailValid && passwordValid
+            return usernameValid && passwordValid
         } else {
-            let usernameValid = username.count >= 3
+            let emailValid = email.contains("@") && email.contains(".")
             let passwordsMatch = password == confirmPassword
             return emailValid && passwordValid && usernameValid && passwordsMatch
         }
@@ -272,7 +267,7 @@ struct AuthenticationView: View {
     
     private func performLogin() {
         // TODO: Implement actual login logic
-        if email == "test@example.com" && password == "password" {
+        if username == "test" && password == "password" {
             isAuthenticated = true
         } else {
             alertMessage = "Invalid email or password. Try test@example.com / password"
@@ -285,7 +280,11 @@ struct AuthenticationView: View {
         if isFormValid {
             isAuthenticated = true
         } else {
-            alertMessage = "Please check your information and try again."
+            alertMessage = """
+                Username must be minimum 3 characters
+                Password must be minimum 6 characters
+                Email must be a valid email
+                """
             showingAlert = true
         }
     }
@@ -433,62 +432,12 @@ class AuthenticationManager: ObservableObject {
     private func checkAuthenticationStatus() {
         // TODO: Check stored authentication state
         // For now, default to not authenticated
-        isAuthenticated = false
+        isAuthenticated = true
     }
     
     func signOut() {
         isAuthenticated = false
         currentUser = nil
         // TODO: Clear stored authentication data
-    }
-}
-
-// MARK: - Updated App Entry Point
-struct AuthenticatedCreelApp: View {
-    @StateObject private var authManager = AuthenticationManager()
-    @StateObject private var fishingData = FishingDataManager()
-    @StateObject private var locationManager = LocationManager()
-    
-    var body: some View {
-        Group {
-            if authManager.isAuthenticated {
-                TabView {
-                    HomeView()
-                        .tabItem {
-                            Image(systemName: "house.fill")
-                            Text("Home")
-                        }
-                    
-                    MapView()
-                        .tabItem {
-                            Image(systemName: "map")
-                            Text("Map")
-                        }
-                    
-                    CatchLogView()
-                        .tabItem {
-                            Image(systemName: "camera")
-                            Text("Log Catch")
-                        }
-                    
-                    MyFishView()
-                        .tabItem {
-                            Image(systemName: "list.bullet")
-                            Text("My Fish")
-                        }
-                    
-                    ProfileView()
-                        .tabItem {
-                            Image(systemName: "person")
-                            Text("Profile")
-                        }
-                }
-                .environmentObject(fishingData)
-                .environmentObject(locationManager)
-                .environmentObject(authManager)
-            } else {
-                AuthenticationView(isAuthenticated: $authManager.isAuthenticated)
-            }
-        }
     }
 }
