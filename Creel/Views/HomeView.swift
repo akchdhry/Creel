@@ -32,7 +32,7 @@ struct HomeView: View {
                 .padding()
             }
             .navigationTitle("Home")
-            .background(Color(.systemGroupedBackground))
+            .background(Color(.secondarySystemBackground))
         }
     }
     
