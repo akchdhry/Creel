@@ -28,7 +28,7 @@ struct ContentView: View {
                             Text("Log Catch")
                         }
                     
-                    MyFishView()
+                    NativeAquariumView()
                         .tabItem {
                             Image(systemName: "fish.fill")
                             Text("The Aquarium")
